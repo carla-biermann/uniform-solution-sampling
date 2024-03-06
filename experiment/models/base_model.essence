@@ -1,0 +1,18 @@
+given n: int(1..) $ given n points
+given k: int(1..) $ search for k points
+where k <= n
+given d: int(0..) $ minimum distance between points
+
+letting D be domain int(1..n)
+letting v be toSet([i | i : D])
+
+$ Coefficients of the nxn matrix M
+given M : matrix indexed by [D, D] of int(0..)
+
+$ Find a set of k points
+find y : matrix indexed by [int(1..k)] of D
+
+such that
+  toSet(y) subset v, 
+  forAll i, j in toSet(y) . M[i, j] > d \/ M[i, j] = 0, $ Minimum distance
+  forAll i : int(1..(k-1)) . y[i] < y[i+1], $ Break symmetries

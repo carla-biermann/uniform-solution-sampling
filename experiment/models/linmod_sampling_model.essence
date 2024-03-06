@@ -1,0 +1,40 @@
+given k: int(1..) $ search for k points
+given n: int(1..) $ of length n
+given d: int(0..) $ minimum distance between points
+
+letting D be domain int(1..n) 
+letting v be toSet([i | i : D])
+letting D_k be domain int(1..k)
+
+$ Coefficients of the nxn matrix M
+given M : matrix indexed by [D, D] of int(0..)
+
+$ New definitions for constraints
+
+given m_eq: int(0..) $ number of equality constraints
+given m_ineq: int(0..) $ number of inequality constraints
+given p: int(1..) $ prime number
+
+letting D_eq be domain int(1..m_eq)
+letting D_ineq be domain int(1..m_ineq)
+
+given A_eq : matrix indexed by [D_eq, D_k] of int(0..) $ equality constraints
+given b_eq : matrix indexed by [D_eq] of int(0..)
+
+given A_ineq : matrix indexed by [D_ineq, D_k] of int(0..) $ inequality constraints
+given b_ineq: matrix indexed by [D_ineq] of int(0..)
+given c : matrix indexed by [D_ineq] of int(0..)
+
+$ Find a set of k points
+find y : matrix indexed by [D_k] of D
+
+such that
+  toSet(y) subset v, 
+  forAll i, j in toSet(y) . M[i, j] > d \/ M[i, j] = 0, $ Minimum distance
+  forAll i : int(1..(k-1)) . y[i] < y[i+1], $ Break symmetries
+
+  $ New constraints
+  $ Equality constraint
+  forAll i : D_eq . ((sum j : D_k . (A_eq[i, j] * y[j]))) % p = b_eq[i],
+  $Inequality constraint
+  forAll i : D_ineq . ((sum j : D_k . (A_ineq[i, j] * y[j])) + b_ineq[i]) % p <= c[i]
