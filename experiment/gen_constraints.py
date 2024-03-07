@@ -299,7 +299,7 @@ def linmod_sampling_experiment():
                 json.dump(parameters_dict, outfile)
 
             # add conjure solve command to commands txt
-            commands_file.write("conjure solve linmod_sampling_model.essence " + filename +
+            commands_file.write("conjure solve models/linmod_sampling_model.essence " + filename +
                                 " --output-format=json --solutions-in-one-file --output-directory=\"" + conjure_output_dir + "\" --number-of-solutions=all\n")
             
             print(f'lambda: {lambda_}, iteration: {i}, written to file.')
