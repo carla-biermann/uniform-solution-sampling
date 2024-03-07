@@ -198,7 +198,7 @@ def get_par_dict():
     Specifies the parameter values of the base model and returns them in a dictionary.
 
     Returns:
-    - Dictionary containing the parameters of the base model
+    - parameters_dict: Dictionary containing the parameters of the base model
 
     """
     # Specify parameters of the problem
@@ -217,7 +217,7 @@ def get_par_dict():
         'M': matrix
     }
 
-    return parameters_dict, n, k
+    return parameters_dict
 
 
 def xor_sampling_experiment():
@@ -227,7 +227,7 @@ def xor_sampling_experiment():
 
     """
 
-    parameters_dict, n, _ = get_par_dict()
+    parameters_dict = get_par_dict()
 
     # Define number of runs of the experiment
     pivot_s = math.floor(math.log2(num_sols))  # pivot value
@@ -239,7 +239,7 @@ def xor_sampling_experiment():
 
         for i in range(iterations):
 
-            parameters_dict['constraints'] = generate_xor_constraints(s, q, n)
+            parameters_dict['constraints'] = generate_xor_constraints(s, q, parameters_dict['n'])
 
             filename = parameter_files_dir + "/s_" + \
                 str(s) + "_" + str(i) + ".json"
@@ -252,6 +252,8 @@ def xor_sampling_experiment():
             commands_file.write("conjure solve models/xor_sampling_model.essence " + filename + " --output-format=json --solutions-in-one-file --solver=kissat --output-directory=\"" +
                                 conjure_output_dir + "\" --number-of-solutions=all  --savilerow-options \"-O3 -sat-sum-tree\"\n")
 
+            print(f's: {s}, iteration: {i}, written to file.')
+
 
 def linmod_sampling_experiment():
     """
@@ -260,7 +262,7 @@ def linmod_sampling_experiment():
 
     """
 
-    parameters_dict, n, k = get_par_dict()
+    parameters_dict = get_par_dict()
 
     # Define number of runs of the experiment
     pivot_lambda = 1 / num_sols
@@ -275,7 +277,7 @@ def linmod_sampling_experiment():
         for i in range(iterations):
 
             A_eq, b_eq, A_ineq, b_ineq, c, p = generate_linmod_constraints(
-                lambda_, n, k)
+                lambda_, parameters_dict['n'], parameters_dict['k'])
 
             m_eq = len(A_eq)
             m_ineq = len(A_ineq)
@@ -299,6 +301,8 @@ def linmod_sampling_experiment():
             # add conjure solve command to commands txt
             commands_file.write("conjure solve linmod_sampling_model.essence " + filename +
                                 " --output-format=json --solutions-in-one-file --output-directory=\"" + conjure_output_dir + "\" --number-of-solutions=all\n")
+            
+            print(f'lambda: {lambda_}, iteration: {i}, written to file.')
 
 
 # Read and parse command line arguments
