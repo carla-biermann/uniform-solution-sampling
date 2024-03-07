@@ -19,18 +19,21 @@ def get_performance(performance_file):
     Returns:
     - a dictionary containing the different performance attributes and their values
     """
-    # Read performance file
-    with open(performance_file, 'r') as file:
-        lines = file.readlines()
+    if os.path.exists(performance_file):
+        # Read performance file
+        with open(performance_file, 'r') as file:
+            lines = file.readlines()
 
-    # Extract keys and values
-    keys = [line.split(':')[0].strip() for line in lines]
-    values = [line.split(':')[1].strip() for line in lines]
+        # Extract keys and values
+        keys = [line.split(':')[0].strip() for line in lines]
+        values = [line.split(':')[1].strip() for line in lines]
 
-    # Create a dictionary
-    new_row = {key: val for key, val in zip(keys, values)}
+        # Create a dictionary
+        new_row = {key: val for key, val in zip(keys, values)}
 
-    return new_row
+        return new_row
+    else:
+        return {}
 
 
 def get_solution(data, l):
