@@ -139,6 +139,9 @@ def record_linmod_solutions():
 
     record('lambda', par_range)
 
+def record_no_sampling_solutions():
+
+    record('base', ['pars'])
 
 # Read and parse command-line arguments
 parser = argparse.ArgumentParser(
@@ -167,4 +170,4 @@ if sampling_algorithm == 'xor':
 elif sampling_algorithm == 'linmod':
     record_linmod_solutions()
 else:
-    raise ValueError('only admissible inputs: xor, linmod')
+    record_no_sampling_solutions()

@@ -1,10 +1,10 @@
 # variables to set by user
-SAMPLING_ALGORITHM="xor"
+SAMPLING_ALGORITHM="None"
 NUM_SOLS=22
-COMMANDS_FILE="commands_xor.txt"
-CONJURE_OUTPUT_DIR="conjure-output-xor"
-PARAMETER_FILES_DIR="xor_constraints"
-RESULTS_FILE="big_runtimes_xor.csv"
+COMMANDS_FILE="commands_none.txt"
+CONJURE_OUTPUT_DIR="conjure-output-none"
+PARAMETER_FILES_DIR="no_constraints"
+RESULTS_FILE="runtimes_none.csv"
 
 # installing python dependencies in a virtual environment
 rm -rf myenv

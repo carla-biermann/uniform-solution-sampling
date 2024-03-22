@@ -304,6 +304,29 @@ def linmod_sampling_experiment():
             
             print(f'lambda: {lambda_}, iteration: {i}, written to file.')
 
+def no_sampling_experiment():
+    """
+    Writes base model parameters to .json files. Writes the conjure solve commands to solve the base model
+    to a .txt file.
+
+    """
+    parameters_dict = get_par_dict()
+    iterations = 30 # num_sols * 100
+
+    # Create multiple JSON files so that output files in output directory have different names and can be analysed
+    for i in range(iterations):
+
+        filename = parameter_files_dir + "/base_pars_" + str(i) + ".json"
+
+        # write to json
+        with open(filename, "w") as outfile:
+            json.dump(parameters_dict, outfile)
+
+        # add conjure solve command to commands txt
+        commands_file.write("conjure solve models/base_model.essence " + filename +
+                            " --output-format=json --solutions-in-one-file --output-directory=\"" + conjure_output_dir + "\" --number-of-solutions=1\n")
+        
+        print(f'iteration: {i}, written to file.')
 
 # Read and parse command line arguments
 parser = argparse.ArgumentParser(description="This is the experiment setup.")
@@ -333,4 +356,4 @@ if sampling_algorithm == 'xor':
 elif sampling_algorithm == 'linmod':
     linmod_sampling_experiment()
 else:
-    raise ValueError('only admissible inputs: xor, linmod')
+    no_sampling_experiment()
