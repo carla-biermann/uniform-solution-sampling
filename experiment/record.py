@@ -81,7 +81,7 @@ def record(parameter, par_range):
         df = pd.DataFrame(columns=[parameter, 'iteration', 'num sols', 'SolverMemOut', 'SolverTotalTime', 'SATClauses',
                           'SavileRowClauseOut', 'SavileRowTotalTime', 'SolverSatisfiable', 'SavileRowTimeOut', 'SolverNodes', 'SATVars'])
 
-    iterations = 30 # 100 * num_sols
+    iterations = 100 * num_sols
 
     for par in par_range:
 

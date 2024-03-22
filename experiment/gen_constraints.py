@@ -202,13 +202,13 @@ def get_par_dict():
 
     """
     # Specify parameters of the problem
-    matrix = np.loadtxt(open("euclidean_mat_1000m.csv",
+    matrix = np.loadtxt(open("euclidean_mat_5000m.csv",
                         "rb"), delimiter=",", skiprows=1)
     matrix = np.around(matrix).tolist()
 
     n = len(matrix)  # length of matrix
-    k = 10  # number of points to look for
-    d = 2300  # minimum euclidean distance btw points
+    k = 6  # number of points to look for
+    d = 2000  # minimum euclidean distance btw points
 
     parameters_dict = {
         'n': n,
@@ -231,7 +231,7 @@ def xor_sampling_experiment():
 
     # Define number of runs of the experiment
     pivot_s = math.floor(math.log2(num_sols))  # pivot value
-    iterations = 30 # num_sols * 100
+    iterations = num_sols * 100
 
     # Generate XOR constraints for each run
 
@@ -268,7 +268,7 @@ def linmod_sampling_experiment():
     pivot_lambda = 1 / num_sols
     lambda_vals = np.unique(np.linspace(
         0.5 * pivot_lambda, 2 * pivot_lambda, 10, endpoint=True).round(decimals=2))
-    iterations = 30 # num_sols * 100
+    iterations = num_sols * 100
 
     # Generate linear modular constraints for each run
 
@@ -311,7 +311,7 @@ def no_sampling_experiment():
 
     """
     parameters_dict = get_par_dict()
-    iterations = 30 # num_sols * 100
+    iterations = num_sols * 100
 
     # Create multiple JSON files so that output files in output directory have different names and can be analysed
     for i in range(iterations):
