@@ -220,7 +220,7 @@ def get_par_dict():
     return parameters_dict
 
 
-def xor_sampling_experiment():
+def xor_sampling_experiment(iterations):
     """
     Generates the constraints for many runs of the XOR sampling algorithm. Writes constraints to a .json file
     and the conjure solve commands to a .txt file.
@@ -231,7 +231,6 @@ def xor_sampling_experiment():
 
     # Define number of runs of the experiment
     pivot_s = math.floor(math.log2(num_sols))  # pivot value
-    iterations = num_sols * 100
 
     # Generate XOR constraints for each run
 
@@ -255,7 +254,7 @@ def xor_sampling_experiment():
             print(f's: {s}, iteration: {i}, written to file.')
 
 
-def linmod_sampling_experiment():
+def linmod_sampling_experiment(iterations):
     """
     Generates the constraints for many runs of the Lin Mod sampling algorithm. Writes constraints to a .json file
     and the conjure solve commands to a .txt file.
@@ -268,7 +267,6 @@ def linmod_sampling_experiment():
     pivot_lambda = 1 / num_sols
     lambda_vals = np.unique(np.linspace(
         0.5 * pivot_lambda, 2 * pivot_lambda, 10, endpoint=True).round(decimals=2))
-    iterations = num_sols * 100
 
     # Generate linear modular constraints for each run
 
@@ -304,14 +302,13 @@ def linmod_sampling_experiment():
             
             print(f'lambda: {lambda_}, iteration: {i}, written to file.')
 
-def no_sampling_experiment():
+def no_sampling_experiment(iterations):
     """
     Writes base model parameters to .json files. Writes the conjure solve commands to solve the base model
     to a .txt file.
 
     """
     parameters_dict = get_par_dict()
-    iterations = num_sols * 100
 
     # Create multiple JSON files so that output files in output directory have different names and can be analysed
     for i in range(iterations):
@@ -331,6 +328,8 @@ def no_sampling_experiment():
 # Read and parse command line arguments
 parser = argparse.ArgumentParser(description="This is the experiment setup.")
 
+parser.add_argument("-solutions_flag", "--solutions", action="store_true",
+                    help="Set flag for experiment to record solutions instead of performance")
 parser.add_argument("num_sols", type=int,
                     help="Number of solutions to problem")
 parser.add_argument("sampling_algorithm", type=str, help="xor or linmod")
@@ -343,6 +342,7 @@ parser.add_argument("parameter_files_dir", type=str,
 
 args = parser.parse_args()
 
+solutions_flag = args.solutions
 num_sols = args.num_sols
 sampling_algorithm = args.sampling_algorithm
 commands_file = args.commands_file
@@ -350,10 +350,16 @@ conjure_output_dir = args.conjure_output_dir
 parameter_files_dir = args.parameter_files_dir
 q = 0.5
 
+# Depending on whether to record solutions or runtime, change number of iterations
+if solutions_flag:
+    iterations = 100 * num_sols
+else:
+    iterations = 30
+
 # Depending on sampling algorithm
 if sampling_algorithm == 'xor':
-    xor_sampling_experiment()
+    xor_sampling_experiment(iterations)
 elif sampling_algorithm == 'linmod':
-    linmod_sampling_experiment()
+    linmod_sampling_experiment(iterations)
 else:
-    no_sampling_experiment()
+    no_sampling_experiment(iterations)

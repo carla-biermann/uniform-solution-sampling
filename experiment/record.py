@@ -77,11 +77,11 @@ def record(parameter, par_range):
     if solutions_flag:
         df = pd.DataFrame(
             columns=[parameter, 'iteration', 'solution', 'num sols'])
+        iterations = 100 * num_sols
     else:
         df = pd.DataFrame(columns=[parameter, 'iteration', 'num sols', 'SolverMemOut', 'SolverTotalTime', 'SATClauses',
                           'SavileRowClauseOut', 'SavileRowTotalTime', 'SolverSatisfiable', 'SavileRowTimeOut', 'SolverNodes', 'SATVars'])
-
-    iterations = 100 * num_sols
+        iterations = 30
 
     for par in par_range:
 
@@ -162,7 +162,7 @@ args = parser.parse_args()
 solutions_flag = args.solutions
 num_sols = args.num_sols
 sampling_algorithm = args.sampling_algorithm
-results_file = args.results_file
+results_file = "./results/" + args.results_file
 conjure_output_dir = args.conjure_output_dir
 
 if sampling_algorithm == 'xor':
